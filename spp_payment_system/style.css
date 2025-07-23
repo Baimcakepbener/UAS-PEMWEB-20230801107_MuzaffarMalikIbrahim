@@ -1,0 +1,67 @@
+/* style.css */
+/* Tambahkan custom style di sini jika perlu */
+.section {
+  /* Untuk transisi antar section */
+  transition: all 0.3s;
+}
+
+/* Custom styling for login options */
+.login-option-btn {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.login-option-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Status badges */
+.status-badge {
+  border-radius: 4px;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.status-lunas {
+  background-color: #def7ec; /* green-100 */
+  color: #046c4e; /* green-800 */
+}
+
+.status-belum-lunas {
+  background-color: #fde8e8; /* red-100 */
+  color: #9b1c1c; /* red-800 */
+}
+
+/* Role indicator styling */
+#userRole {
+  font-weight: 500;
+}
+
+/* Button action hover effects */
+.action-btn {
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  filter: brightness(110%);
+}
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+th {
+  background-color: #f3f4f6; /* gray-100 */
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #f9fafb; /* gray-50 */
+}
+
+tr:hover {
+  background-color: #eff6ff; /* blue-50 */
+}

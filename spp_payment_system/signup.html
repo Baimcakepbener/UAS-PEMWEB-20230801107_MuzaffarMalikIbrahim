@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pendaftaran Siswa Baru</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <nav class="bg-green-600 p-4 text-white flex justify-between">
+    <span class="font-bold">Pendaftaran Siswa Baru - SPP Payment System</span>
+  </nav>
+  
+  <div class="flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded shadow-lg w-96 max-w-full">
+      <h2 class="text-xl font-bold mb-6 text-center">Daftar Siswa Baru</h2>
+      
+      <form id="signupForm">
+        <label class="block mb-2">Nama Lengkap</label>
+        <input type="text" id="signupNama" class="w-full border px-3 py-2 mb-4 rounded" required>
+        
+        <label class="block mb-2">NIS</label>
+        <input type="text" id="signupNIS" class="w-full border px-3 py-2 mb-4 rounded" required>
+        
+        <label class="block mb-2">Program Studi</label>
+        <select id="signupKelas" class="w-full border px-3 py-2 mb-4 rounded" required>
+          <option value="">Pilih Program Studi</option>
+          <!-- Options will be loaded from JS -->
+        </select>
+        
+        <label class="block mb-2">Password</label>
+        <input type="password" id="signupPassword" class="w-full border px-3 py-2 mb-4 rounded" required>
+        
+        <label class="block mb-2">Konfirmasi Password</label>
+        <input type="password" id="signupConfirmPassword" class="w-full border px-3 py-2 mb-4 rounded" required>
+        
+        <div id="passwordMatchError" class="text-red-500 text-sm mb-4 hidden">
+          Password tidak sama!
+        </div>
+        
+        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded transition hover:bg-green-700">
+          Daftar Sekarang
+        </button>
+        
+        <p class="text-sm text-gray-600 mt-4 text-center">
+          Sudah punya akun? <a href="javascript:void(0)" id="loginBtn" class="text-blue-500 hover:underline">Login disini</a>
+        </p>
+      </form>
+    </div>
+  </div>
+  
+  <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 rounded-lg w-96 max-w-full text-center">
+      <svg class="w-16 h-16 text-green-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+      <h3 class="text-xl font-bold mb-2">Pendaftaran Berhasil!</h3>
+      <p class="mb-4">Silakan login menggunakan NIS dan password yang telah didaftarkan.</p>
+      <button id="closeModalBtn" class="bg-blue-600 text-white px-4 py-2 rounded">Kembali ke Login</button>
+    </div>
+  </div>
+
+  <script>
+    // Load kelas data from localStorage
+    let kelasData = [];
+    
+    // Get registered students from localStorage or empty array
+    let registeredStudents = JSON.parse(localStorage.getItem('siswaData')) || [];
+    
+    // Load kelas data from localStorage
+    const loadKelasFromLocalStorage = () => {
+      const savedKelas = localStorage.getItem('kelasData');
+      if (savedKelas) {
+        kelasData = JSON.parse(savedKelas);
+      } else {
+        // Default data if no data in localStorage
+        kelasData = [
+          { id: 1, nama: "X IPA 1" },
+          { id: 2, nama: "X IPA 2" },
+          { id: 3, nama: "X IPS 1" },
+          { id: 4, nama: "X IPS 2" },
+          { id: 5, nama: "XI IPA 1" },
+          { id: 6, nama: "XI IPA 2" },
+          { id: 7, nama: "XI IPS 1" },
+          { id: 8, nama: "XI IPS 2" },
+          { id: 9, nama: "XII IPA 1" },
+          { id: 10, nama: "XII IPA 2" },
+          { id: 11, nama: "XII IPS 1" },
+          { id: 12, nama: "XII IPS 2" }
+        ];
+        localStorage.setItem('kelasData', JSON.stringify(kelasData));
+      }
+    };
+    
+    // Populate kelas dropdown
+    const populateKelas = () => {
+      const dropdown = document.getElementById('signupKelas');
+      // Clear existing options except the first one
+      while (dropdown.options.length > 1) {
+        dropdown.remove(1);
+      }
+      // Add new options from kelasData
+      kelasData.forEach(kelas => {
+        const option = document.createElement('option');
+        option.value = kelas.nama;
+        option.textContent = kelas.nama;
+        dropdown.appendChild(option);
+      });
+    };
+    
+    // Handle password confirmation
+    const checkPasswordMatch = () => {
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('signupConfirmPassword').value;
+      const errorDiv = document.getElementById('passwordMatchError');
+      
+      if (confirmPassword && password !== confirmPassword) {
+        errorDiv.classList.remove('hidden');
+        return false;
+      } else {
+        errorDiv.classList.add('hidden');
+        return true;
+      }
+    };
+    
+    // Add event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load kelas data first
+      loadKelasFromLocalStorage();
+      populateKelas();
+      
+      // Password validation
+      document.getElementById('signupConfirmPassword').addEventListener('input', checkPasswordMatch);
+      
+      // Form submission
+      document.getElementById('signupForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        if (!checkPasswordMatch()) return;
+        
+        const nama = document.getElementById('signupNama').value;
+        const nis = document.getElementById('signupNIS').value;
+        const kelas = document.getElementById('signupKelas').value;
+        const password = document.getElementById('signupPassword').value;
+        
+        // Check if NIS already exists
+        if (registeredStudents.some(s => s.nis === nis)) {
+          alert("NIS sudah terdaftar! Silakan gunakan NIS lain.");
+          return;
+        }
+        
+        // Create new student
+        const newStudent = {
+          id: registeredStudents.length > 0 ? Math.max(...registeredStudents.map(s => s.id)) + 1 : 1,
+          nama,
+          nis,
+          kelas,
+          password
+        };
+        
+        // Add to array and save to localStorage
+        registeredStudents.push(newStudent);
+        localStorage.setItem('siswaData', JSON.stringify(registeredStudents));
+        
+        // Show success modal
+        document.getElementById('successModal').classList.remove('hidden');
+      });
+      
+      // Close modal and redirect to login
+      document.getElementById('closeModalBtn').addEventListener('click', () => {
+        window.opener.postMessage('refreshSignup', '*');
+        window.close();
+      });
+      
+      // Login button
+      document.getElementById('loginBtn').addEventListener('click', () => {
+        window.opener.postMessage('refreshSignup', '*');
+        window.close();
+      });
+    });
+
+    // Listen for changes in kelasData from localStorage
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'kelasData') {
+        loadKelasFromLocalStorage();
+        populateKelas();
+      }
+    });
+  </script>
+</body>
+</html> 

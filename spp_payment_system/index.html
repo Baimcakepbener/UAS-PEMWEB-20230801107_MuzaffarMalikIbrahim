@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SPP Payment System</title>
+  <link href="style.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-blue-700 p-4 text-white flex justify-between">
+    <span class="font-bold">SPP Payment System</span>
+    <div id="userRole" class="italic"></div>
+    <button id="logoutBtn" class="hidden bg-red-500 px-3 py-1 rounded">Logout</button>
+  </nav>
+
+  <!-- Login Options -->
+  <div id="loginOptions" class="flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded shadow-md w-80 text-center">
+      <h2 class="text-xl font-bold mb-6">Pilih Tipe Login</h2>
+      <button id="adminLoginBtn" class="w-full bg-blue-700 text-white py-2 rounded mb-4 login-option-btn">Petugas</button>
+      <button id="siswaLoginBtn" class="w-full bg-green-600 text-white py-2 rounded mb-4 login-option-btn">Siswa</button>
+      <p class="text-sm text-gray-600 mt-4">Siswa baru? <a href="#" id="signupBtn" class="text-blue-500 hover:underline">Daftar disini</a></p>
+    </div>
+  </div>
+
+  <!-- Admin Login Form -->
+  <div id="adminLoginSection" class="flex items-center justify-center h-screen hidden">
+    <form id="adminLoginForm" class="bg-white p-8 rounded shadow-md w-80">
+      <h2 class="text-xl font-bold mb-4 text-center">Login Petugas</h2>
+      <label class="block mb-2">Username</label>
+      <input type="text" id="adminUsername" class="w-full border px-2 py-1 mb-4 rounded" required>
+      <label class="block mb-2">Password</label>
+      <input type="password" id="adminPassword" class="w-full border px-2 py-1 mb-4 rounded" required>
+      <button type="submit" class="w-full bg-blue-700 text-white py-2 rounded">Login</button>
+      <button type="button" id="backToOptionsBtn" class="w-full border border-gray-300 py-2 rounded mt-2">Kembali</button>
+    </form>
+  </div>
+
+  <!-- Siswa Login Form -->
+  <div id="siswaLoginSection" class="flex items-center justify-center h-screen hidden">
+    <form id="siswaLoginForm" class="bg-white p-8 rounded shadow-md w-80">
+      <h2 class="text-xl font-bold mb-4 text-center">Login Siswa</h2>
+      <label class="block mb-2">NIM</label>
+      <input type="text" id="siswaNIS" class="w-full border px-2 py-1 mb-4 rounded" required>
+      <label class="block mb-2">Password</label>
+      <input type="password" id="siswaPassword" class="w-full border px-2 py-1 mb-4 rounded" required>
+      <button type="submit" class="w-full bg-green-600 text-white py-2 rounded">Login</button>
+      <button type="button" id="backToOptionsBtn2" class="w-full border border-gray-300 py-2 rounded mt-2">Kembali</button>
+    </form>
+  </div>
+
+  <!-- Main Content -->
+  <div id="mainContent" class="p-6 hidden">
+    <!-- Menu -->
+    <div class="mb-6">
+      <div class="menu">
+        <button class="menuBtn bg-blue-500 text-white px-4 py-2 rounded mr-2 mb-2" data-section="crudSiswa">Data Mahasiswa</button>
+        <button class="menuBtn bg-blue-500 text-white px-4 py-2 rounded mr-2 mb-2" data-section="crudKelas">Data Program Studi</button>
+        <button class="menuBtn bg-blue-500 text-white px-4 py-2 rounded mr-2 mb-2" data-section="crudSpp">Data SPP</button>
+        <button class="menuBtn bg-blue-500 text-white px-4 py-2 rounded mr-2 mb-2" data-section="history">Lihat History Pembayaran</button>
+        <button class="menuBtn bg-blue-500 text-white px-4 py-2 rounded mr-2 mb-2" data-section="laporan">Generate Laporan</button>
+      </div>
+    </div>
+
+    <!-- Section: CRUD Data Siswa -->
+    <div id="crudSiswa" class="section hidden">
+      <h3 class="text-lg font-bold mb-2">Data Mahasiswa</h3>
+      <div id="siswaTable"></div>
+    </div>
+
+    <!-- Section: CRUD Data Kelas -->
+    <div id="crudKelas" class="section hidden">
+      <h3 class="text-lg font-bold mb-2">Data Program Studi</h3>
+      <div id="kelasTable"></div>
+    </div>
+
+    <!-- Section: CRUD Data SPP -->
+    <div id="crudSpp" class="section hidden">
+      <h3 class="text-lg font-bold mb-2">Buat Tagihan SPP</h3>
+      <div id="sppTable"></div>
+    </div>
+
+    <!-- Section: Lihat History Pembayaran -->
+    <div id="history" class="section hidden">
+      <h3 class="text-lg font-bold mb-2">History Pembayaran</h3>
+      <div id="historyTable"></div>
+    </div>
+
+    <!-- Section: Generate Laporan -->
+    <div id="laporan" class="section hidden">
+      <h3 class="text-lg font-bold mb-2">Generate Laporan</h3>
+      <div id="laporanContent"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
